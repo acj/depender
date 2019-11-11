@@ -37,13 +37,13 @@ func Test_dependenciesForPackages(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := dependenciesForPackages(tt.args.paths, tt.args.excludedPathSegments)
+			got, err := dependenciesForImportPaths(tt.args.paths, tt.args.excludedPathSegments)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("dependenciesForPackages() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("dependenciesForImportPaths() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("dependenciesForPackages() got = %v, want %v", got, tt.want)
+				t.Errorf("dependenciesForImportPaths() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

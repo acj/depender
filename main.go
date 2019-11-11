@@ -17,13 +17,10 @@ func main() {
 	if *excludedPaths != "" {
 		userExcludedPathSegments = strings.Split(*excludedPaths, ",")
 	}
-	excludedPathSegments := append(defaultExcludedPathSegments, userExcludedPathSegments...)
+	excludedPathSubstrings := append(defaultExcludedPathSegments, userExcludedPathSegments...)
 
-	m := Manifest{
-		PackagePaths:         strings.Join(flag.Args(), " "),
-		ExcludedPathSegments: excludedPathSegments,
-	}
-	buf, err := m.Generate()
+	packagePaths := strings.Join(flag.Args(), " ")
+	dummyGoSourceWithImportedDeps, err := GenerateDummySource(packagePaths, excludedPathSubstrings)
 
 	f, err := os.Create(*outputPath)
 	if err != nil {
@@ -32,7 +29,7 @@ func main() {
 	}
 	defer f.Close()
 
-	if 	_, err := f.Write(buf); err != nil {
+	if 	_, err := f.Write(dummyGoSourceWithImportedDeps); err != nil {
 		fmt.Printf("error: %v", err)
 		os.Exit(-1)
 	}

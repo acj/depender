@@ -6,7 +6,21 @@ import (
 	"strings"
 )
 
-func dependenciesForPackages(paths string, excludedPathSegments []string) ([]string, error) {
+var standardLibraryPackages = map[string]bool{}
+
+func init() {
+	// Build a cache of package paths for the standard library
+	packages, err := packages.Load(nil, "std")
+	if err != nil {
+		panic(err)
+	}
+
+	for _, p := range packages {
+		standardLibraryPackages[p.PkgPath] = true
+	}
+}
+
+func dependenciesForImportPaths(paths string, excludedPathSegments []string) ([]string, error) {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedImports | packages.NeedDeps,
 	}
