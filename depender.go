@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// GenerateDummySource returns a compilable source file that imports first-order dependencies for each of the given
+// import paths. It omits any dependency paths that contain an element of excludedPathSubstrings.
 func GenerateDummySource(importPaths string, excludedPathSubstrings []string) ([]byte, error) {
 	packages, err := dependenciesForImportPaths(importPaths, excludedPathSubstrings)
 	if err != nil {
