@@ -33,4 +33,6 @@ func main() {
 		fmt.Printf("error: %v", err)
 		os.Exit(-1)
 	}
+
+	fmt.Printf("Dummy source file written to %s\n", *outputPath)
 }
